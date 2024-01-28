@@ -5,6 +5,6 @@ const router = Router()
 
 router.get('/x/login', loginToX)
     .get('/x/callback', onCallbackX)
-    .post('/x/tweet', tweetX)
+    .post('/x/post', tweetX)
 
 export default router

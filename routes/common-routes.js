@@ -19,7 +19,7 @@ router.post('/add-post', async (req, res) => {
     if (!req.cookies.token)
         return res.status(401).json({ error: "Unauthorized" })
 
-    const { postBody, timestamp, postFrom, timeToPost } = req.body
+    const { postBody, timestamp, postTo } = req.body
     const token = req.cookies.token
     const params = {
         TableName: process.env.TABLE_NAME,
@@ -28,8 +28,7 @@ router.post('/add-post', async (req, res) => {
             token,
             timestamp,
             postBody,
-            postFrom,
-            timeToPost
+            postTo
         }
     }
 

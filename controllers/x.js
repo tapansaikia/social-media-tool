@@ -48,14 +48,14 @@ const onCallbackX = async (req, res) => {
 }
 
 const tweetX = async (req, res) => {
-    const { tweet, oauth_token } = req.body
+    const { postBody, oauth_token } = req.body
     const client = loggedClients[oauth_token]
 
     if (!client)
         return res.status(403).json({ error: "Logged client not found for token" })
 
     try {
-        const response = await client.v2.tweet(tweet)
+        const response = await client.v2.tweet(postBody)
         console.log("Tweet posted successfully", response)
         res.json({ data: response });
     } catch (error) {
