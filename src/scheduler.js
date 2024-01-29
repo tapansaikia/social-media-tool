@@ -1,38 +1,53 @@
 import { CronJob } from 'cron'
 import { DynamoDBClient, ScanCommand } from '@aws-sdk/client-dynamodb'
-import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb"
+import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs"
 import dotenv from 'dotenv'
 
 dotenv.config()
 
-const client = new DynamoDBClient()
+const dynamoDbClient = new DynamoDBClient()
+const sqsClient = new SQSClient({});
 
-const docClient = DynamoDBDocumentClient.from(client)
-
-
+let startKey = null
 
 const job = CronJob.from({
 	cronTime: '* * * * * *',
 	onTick: async function () {
-		// console.log('You will see this message every second')
-        // scan DynamoDB for messages to post and send them to the queue
-        const command = new ScanCommand({
-            // FilterExpression: "CrustType = :crustType",
-            // For more information about data types,
-            // see https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html#HowItWorks.DataTypes and
-            // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.LowLevelAPI.html#Programming.LowLevelAPI.DataTypeDescriptors
-            // ExpressionAttributeValues: {
-            //   ":crustType": { S: "Graham Cracker" },
-            // },
-            // ProjectionExpression: "Flavor, CrustType, Description",
-            TableName: "Posts",
-          });
-        
-          const response = await client.send(command);
-        //   response.Items.forEach(function (pie) {
-        //     console.log(`${pie.Flavor.S} - ${pie.Description.S}\n`);
-        //   });
-        console.log(JSON.stringify(response))
+    // scan DynamoDB for messages to post and send them to the queue
+    const command = new ScanCommand({
+      FilterExpression: "#isProcessed = :negative AND #ts <= :currentTime",
+      ExpressionAttributeNames: {
+        "#ts": "timestamp",
+        "#isProcessed": "isPosted",
+      },
+      ExpressionAttributeValues: {
+        ":currentTime": { N: new Date().getTime().toString() },
+        ":negative": { BOOL: false },
+      },
+      ExclusiveStartKey: startKey,
+      TableName: "Posts",
+    })
+
+    try {
+      const response = await dynamoDbClient.send(command)
+      startKey = response.LastEvaluatedKey
+      response.Items.forEach(async (item) => {
+        // send message to SQS
+        const command = new SendMessageCommand({
+          QueueUrl: process.env.SQS_URL,
+          DelaySeconds: 10,
+          MessageBody: JSON.stringify({
+            postBody: item.postBody.S,
+            oauth_toke: item.token.S,
+          }),
+        })
+
+        const response = await sqsClient.send(command);
+        console.log("Message Queued Successfully", response)
+      })
+    } catch (e) {
+      console.error("Error while scheduling message to SQS", e)
+    }   
 	},
 	start: true
 })

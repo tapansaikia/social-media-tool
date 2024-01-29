@@ -32,7 +32,7 @@ const makePost = async ({ postTo, postBody, token }) => {
 }
 
 const worker = Consumer.create({
-  queueUrl: 'https://sqs.ap-south-1.amazonaws.com/590183911627/PostSchedulerQueue',
+  queueUrl: process.env.SQS_URL,
   handleMessage: async (message) => {
     await makePost(JSON.parse(message.Body))
   },

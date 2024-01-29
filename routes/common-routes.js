@@ -28,7 +28,8 @@ router.post('/add-post', async (req, res) => {
             token,
             timestamp,
             postBody,
-            postTo
+            postTo,
+            isPosted: false
         }
     }
 
