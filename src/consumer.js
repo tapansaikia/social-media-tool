@@ -51,4 +51,5 @@ worker.on('timeout_error', (err) => {
   console.error(err.message)
 })
 
+console.log('Consumer started')
 worker.start()

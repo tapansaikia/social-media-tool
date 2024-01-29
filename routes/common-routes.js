@@ -13,7 +13,7 @@ const client = new DynamoDBClient({
     },
   })
 
-const docClient = DynamoDBDocumentClient.from(client);
+const docClient = DynamoDBDocumentClient.from(client)
 
 router.post('/add-post', async (req, res) => {
     if (!req.cookies.token)
