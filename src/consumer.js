@@ -5,7 +5,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const makePost = async ({ postTo, postBody, token }) => {
-    const url = `http://localhost:3000/api/v1/${postTo}/post` // Update with your callback URL
+    const url = `http://localhost:3001/api/v1/${postTo}/post` // Update with your callback URL
     const data = {
         postBody,
         oauth_token: token

@@ -1,7 +1,10 @@
+import React from 'react'
+import Home from './components/home'
+
 const App = () => {
   return (
-    <>hello</>
+    <Home />
   )
 }
 
-export default App;
+export default App
