@@ -34,6 +34,7 @@ const makePost = async ({ postTo, postBody, token }) => {
 const worker = Consumer.create({
   queueUrl: process.env.SQS_URL,
   handleMessage: async (message) => {
+    console.log('Message received', message)
     await makePost(JSON.parse(message.Body))
   },
   sqs: new SQSClient()
