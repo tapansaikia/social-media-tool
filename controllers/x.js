@@ -3,7 +3,7 @@ import { TwitterApi } from "twitter-api-v2"
 const authTokenMap = {}
 const loggedClients = {} // tried storing in session but session is losing some data
 
-const loginToX =  async (req, res) => {
+const login =  async (req, res) => {
     try {
         const client = new TwitterApi({appKey: process.env.CONSUMER_KEY, appSecret: process.env.CONSUMER_SECRET})
         const authLink = await client.generateAuthLink(process.env.CALLBACK_URL, { linkMode: 'authorize' })
@@ -18,7 +18,7 @@ const loginToX =  async (req, res) => {
     }
 }
 
-const onCallbackX = async (req, res) => {
+const onCallback = async (req, res) => {
     const { oauth_token, oauth_verifier } = req.query
     const oauth_token_secret = authTokenMap[oauth_token]
     delete authTokenMap[oauth_token]
@@ -46,7 +46,7 @@ const onCallbackX = async (req, res) => {
     }
 }
 
-const tweetX = async (req, res) => {
+const post = async (req, res) => {
     const { postBody, oauth_token } = req.body
     const client = loggedClients[oauth_token]
 
@@ -63,4 +63,4 @@ const tweetX = async (req, res) => {
     }
 }
 
-export { loginToX, onCallbackX, tweetX }
+export { login, onCallback, post }

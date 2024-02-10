@@ -1,10 +1,10 @@
 import { Router } from 'express'
-import { loginToX, onCallbackX, tweetX } from '../controllers/x.js'
+import { login, onCallback, post } from '../controllers/x.js'
 
 const router = Router()
 
-router.get('/x/login', loginToX)
-    .get('/x/callback', onCallbackX)
-    .post('/x/post', tweetX)
+router.get('/x/login', login)
+    .get('/x/callback', onCallback)
+    .post('/x/post', post)
 
 export default router
