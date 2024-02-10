@@ -12,7 +12,6 @@ const Form = ({ onSubmit }) => {
   }
 
   const handleTimeChange = (value) => {
-    console.log(JSON.stringify(value))
     if (value && value._isValid) { 
       const timestamp = new Date(value).getTime()
       setTimeOfPost(timestamp)

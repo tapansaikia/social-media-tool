@@ -18,9 +18,14 @@ const List = () => {
     }
   }
 
+  const getDate = (timestamp) => {
+    const date = new Date(timestamp)
+    return date.toLocaleString()
+  }
+
   return (
     <div>
-      <button onClick={fetchPosts}>Fetch Posts</button> {/* Converted to button */}
+      <button onClick={fetchPosts}>Fetch Posts</button>
       <div>
           <h2>All Posts</h2>
           <table>
@@ -38,9 +43,9 @@ const List = () => {
                 <tr key={index}>
                   <td>{post.postId}</td>
                   <td>{post.postBody}</td>
-                  <td>{post.scheduledFor}</td>
-                  <td>{post.postedAt}</td>
-                  <td>{post.postedOnPlatform}</td>
+                  <td>{getDate(post.post_timestamp)}</td>
+                  <td>{post.isPosted ? getDate(post.post_timestamp) : 'N/A'}</td>
+                  <td>{post.postTo}</td>
                 </tr>
               ))}
             </tbody> : null}

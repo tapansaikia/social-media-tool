@@ -39,7 +39,7 @@ const onCallback = async (req, res) => {
         // store accessToken and accessSecret in a map
         loggedClients[oauth_token] = loggedClient
         res.cookie("token", oauth_token, { httpOnly: true, overwrite: true })
-        res.redirect("/")
+        res.redirect("/?logged=true")
     } catch (error) {
         console.log(error)
         res.status(403).send('Invalid verifier or access tokens!')
