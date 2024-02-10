@@ -38,8 +38,7 @@ const onCallbackX = async (req, res) => {
         console.log("Logged in client for token", oauth_token, loggedClient);
         // store accessToken and accessSecret in a map
         loggedClients[oauth_token] = loggedClient
-        res.setHeader("Set-Cookie", `token=${oauth_token}; HttpOnly`)
-        res.setHeader("Access-Control-Allow-Credentials", "true")
+        res.cookie("token", oauth_token, { httpOnly: true, overwrite: true })
         res.redirect("/")
     } catch (error) {
         console.log(error)
