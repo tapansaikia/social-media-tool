@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import './styles/list.css' // Import the CSS file
 
 const List = () => {
   const [posts, setPosts] = useState([])
@@ -24,21 +25,21 @@ const List = () => {
   }
 
   return (
-    <div>
-      <button onClick={fetchPosts}>Fetch Posts</button>
-      <div>
-          <h2>All Posts</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Post ID</th>
-                <th>Post Body</th>
-                <th>Scheduled For</th>
-                <th>Posted At</th>
-                <th>Posted On Platform</th>
-              </tr>
-            </thead>
-            {posts.length ? <tbody>
+    <div className="list-container">
+      <button onClick={fetchPosts} className="fetch-button">Fetch Posts</button>
+      {posts.length ? <div className="posts-table">
+        <h2>All Posts</h2>
+        <table>
+          <thead>
+            <tr>
+              <th className="table-header">Post ID</th>
+              <th className="table-header">Post Body</th>
+              <th className="table-header">Scheduled For</th>
+              <th className="table-header">Posted At</th>
+              <th className="table-header">Posted On Platform</th>
+            </tr>
+          </thead>
+          <tbody>
               {posts.map((post, index) => (
                 <tr key={index}>
                   <td>{post.postId}</td>
@@ -48,9 +49,9 @@ const List = () => {
                   <td>{post.postTo}</td>
                 </tr>
               ))}
-            </tbody> : null}
-          </table>
-        </div>
+            </tbody>
+        </table>
+      </div> : <div>No posts scheduled to be posted yet</div>}
     </div>
   )
 }

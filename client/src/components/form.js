@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Datetime from 'react-datetime'
-
 import 'react-datetime/css/react-datetime.css'
+import './styles/form.css'
 
 const Form = ({ onSubmit }) => {
   const [postText, setPostText] = useState('')
@@ -42,22 +42,25 @@ const Form = ({ onSubmit }) => {
   }
 
   return (
-    <div>
+    <div className="form-container">
+      <div className="form-header">{`Share your thoughts & optionally select date time for creating a post on X (formerly Twitter)`}</div>
       <textarea
         value={postText}
         onChange={handleChange}
         placeholder="Write your post..."
         rows={4}
         cols={50}
+        className="post-textarea"
       />
       <br />
       <Datetime
         value={timeOfPost}
         onChange={handleTimeChange}
         inputProps={{ placeholder: 'Select post time' }}
+        className="datetime-input"
       />
       <br />
-      <button onClick={handleSubmit}>Submit Post</button>
+      <button disabled={!postText.length} onClick={handleSubmit} className="submit-button">Submit Post</button>
     </div>
   )
 }

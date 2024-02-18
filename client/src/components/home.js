@@ -16,11 +16,11 @@ const Home = () => {
   }
   
 
-  return isLoggedIn ? (
-    <div>
+  return true ? (
+    <>
       <Form />
       <List />
-    </div>
+    </>
   ) : (
     <Dropdown 
       onSubmit={handleDropdownSubmit} 
